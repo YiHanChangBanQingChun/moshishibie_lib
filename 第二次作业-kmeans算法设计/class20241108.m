@@ -7,7 +7,7 @@ function main()
     configure_plot();
     filename = 'D:\Users\admin\Documents\MATLAB\moshishibie_lib\第二次作业-kmeans算法设计\data\iris34.xlsx';
     k = 3;
-    data = readtable(filename);
+    data = readtable(filename, 'VariableNamingRule', 'preserve');
     variables = table2array(data(:, 2:5));
     true_labels = table2array(data(:, 6));
     var_names = data.Properties.VariableNames(2:5);
@@ -58,7 +58,7 @@ function main()
     % 保存聚类数据
     data.Cluster = nan(height(data), 1);
     data.Cluster(mask) = final_labels;
-    writetable(data, 'clustered_data.xlsx');
+    writetable(data, 'D:\Users\admin\Documents\MATLAB\moshishibie_lib\第二次作业-kmeans算法设计\data\clustered_iris34_m.xlsx');
 end
 
 function configure_plot()
@@ -135,24 +135,26 @@ function [accuracy, mapped_labels] = calculate_accuracy(labels, true_labels)
 end
 
 function plot_2d_results(data_subset, mapped_labels, centroids, var_names, i, j, accuracy)
-    scatter(data_subset(:, 1), data_subset(:, 2), 50, mapped_labels, 'filled');
+    % 绘制 K-means 聚类结果的二维散点图
+    gscatter(data_subset(:, 1), data_subset(:, 2), mapped_labels, 'rgb', 'o', 8);
     hold on;
-    scatter(centroids(:, 1), centroids(:, 2), 200, 'r', 'x');
+    scatter(centroids(:, 1), centroids(:, 2), 200, 'k', 'x', 'LineWidth', 2);
     title(sprintf('K-means 聚类 (%s vs %s)\n准确率: %.2f', var_names{i}, var_names{j}, accuracy), 'Interpreter', 'none');
     xlabel(var_names{i}, 'Interpreter', 'none');
     ylabel(var_names{j}, 'Interpreter', 'none');
-    legend('Data Points', 'Centroids');
+    legend({'类别 1', '类别 2', '类别 3', '中心'}, 'Location', 'best');
     hold off;
 end
 
 function plot_3d_results(data_subset, mapped_labels, centroids, var_names, accuracy)
-    scatter3(data_subset(:, 1), data_subset(:, 2), data_subset(:, 3), 50, mapped_labels, 'filled');
+    % 绘制 K-means 聚类结果的三维散点图
+    scatter3(data_subset(:, 1), data_subset(:, 2), data_subset(:, 3), 36, mapped_labels, 'filled');
     hold on;
-    scatter3(centroids(:, 1), centroids(:, 2), centroids(:, 3), 200, 'r', 'x');
+    scatter3(centroids(:, 1), centroids(:, 2), centroids(:, 3), 200, 'k', 'x', 'LineWidth', 2);
     title(sprintf('K-means 聚类 (%s, %s, %s)\n准确率: %.2f', var_names{1}, var_names{2}, var_names{3}, accuracy), 'Interpreter', 'none');
     xlabel(var_names{1}, 'Interpreter', 'none');
     ylabel(var_names{2}, 'Interpreter', 'none');
     zlabel(var_names{3}, 'Interpreter', 'none');
-    legend('Data Points', 'Centroids');
+    legend({'数据点', '中心'}, 'Location', 'best');
     hold off;
 end

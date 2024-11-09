@@ -63,7 +63,7 @@ def main():
     # 保存聚类数据
     data['Cluster'] = np.nan
     data.loc[mask, 'Cluster'] = final_labels
-    data.to_excel('clustered_data.xlsx', index=False)
+    data.to_excel('D:\\Users\\admin\\Documents\\MATLAB\\moshishibie_lib\\第二次作业-kmeans算法设计\\data\\clustered_iris34_py.xlsx', index=False)
 
 def plot_3d_results(data_subset, mapped_labels, centroids, var_names, accuracy):
     """
