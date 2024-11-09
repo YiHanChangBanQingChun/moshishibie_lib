@@ -1,5 +1,4 @@
 clc;
-clear all;
 
 % 读取 .xlsx 文件
 filename = 'D:\Users\admin\Documents\MATLAB\moshishibie_lib\第二次作业-kmeans算法设计\data\iris34.xlsx'; % 替换为你的 .xlsx 文件的绝对路径
