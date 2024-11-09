@@ -54,7 +54,7 @@ def main():
         fig.delaxes(ax)
     plt.tight_layout()
     plt.show()
-
+    
     # 绘制三维图
     data_subset_3d = filtered_data[:, :3]
     centroids_3d, labels_3d = kmeans(data_subset_3d, k)
@@ -111,25 +111,24 @@ def remove_outliers(data, labels, m=3):
     print(f'Removed {data.shape[0] - filtered_data.shape[0]} outliers')
     return filtered_data, filtered_labels, mask
 
-def initialize_centroids(data, k, grid_density=10):
+def initialize_centroids(data, k):
     """
     使用基于网格密度的方法初始化k-means聚类的质心。
     参数:
     data (numpy.ndarray): 数据集，每行代表一个数据点。
     k (int): 聚类的数量。
-    grid_density (int): 网格密度，默认为10。
     返回:
     numpy.ndarray: 一个形状为 (k, data.shape[1]) 的数组，包含初始化的质心。
     """
     print("Initializing centroids...")
     min_vals = np.min(data, axis=0)
     max_vals = np.max(data, axis=0)
-    grid_size = (max_vals - min_vals) / grid_density
+    grid_size = (max_vals - min_vals) / k
     centroids = []
-    grid_counts = np.zeros([grid_density] * data.shape[1])
+    grid_counts = np.zeros([k] * data.shape[1])
     for point in data:
         grid_idx = tuple(((point - min_vals) / grid_size).astype(int))
-        grid_idx = tuple(min(idx, grid_density - 1) for idx in grid_idx)  # 防止越界
+        grid_idx = tuple(min(idx, k - 1) for idx in grid_idx)  # 防止越界
         grid_counts[grid_idx] += 1
     for _ in range(k):
         max_density_idx = np.unravel_index(np.argmax(grid_counts), grid_counts.shape)
@@ -138,41 +137,29 @@ def initialize_centroids(data, k, grid_density=10):
         grid_counts[max_density_idx] = 0
     return np.array(centroids)
 
-def kmeans(data, k, max_iters=100, n_init=10):
+def kmeans(data, k, max_iters=100):
     """
-    对给定数据执行k-means聚类。
-    参数:
-    data (numpy.ndarray): 要聚类的输入数据，每行是一个数据点。
-    k (int): 聚类的数量。
-    max_iters (int, optional): 运行算法的最大迭代次数。默认值为100。
-    n_init (int, optional): 运行算法的次数，选择最佳结果。默认值为10。
-
-    返回:
+    - 对给定数据执行k-means聚类。
+    - 参数:
+        1. data (numpy.ndarray): 要聚类的输入数据，每行是一个数据点。
+        2. k (int): 聚类的数量。
+        3. max_iters (int, optional): 运行算法的最大迭代次数。默认值为100。
+    - 返回:
     tuple: 包含以下内容的元组:
         - centroids (numpy.ndarray): 聚类的最终质心。
         - labels (numpy.ndarray): 每个数据点所属的聚类标签。
     """
-    best_inertia = np.inf
-    best_centroids = None
-    best_labels = None
-
-    for _ in range(n_init):
-        centroids = initialize_centroids(data, k)
-        for _ in range(max_iters):
-            distances = np.linalg.norm(data[:, np.newaxis] - centroids, axis=2)
-            labels = np.argmin(distances, axis=1)
-            new_centroids = np.array([data[labels == i].mean(axis=0) for i in range(k)])
-            if np.all(centroids == new_centroids):
-                break
-            centroids = new_centroids
-
-        inertia = np.sum((data - centroids[labels]) ** 2)
-        if inertia < best_inertia:
-            best_inertia = inertia
-            best_centroids = centroids
-            best_labels = labels
-
-    return best_centroids, best_labels
+    print("Running K-means algorithm...")
+    centroids = initialize_centroids(data, k)
+    for _ in range(max_iters):
+        print(f'Iteration {_ + 1}')
+        distances = np.linalg.norm(data[:, np.newaxis] - centroids, axis=2)
+        labels = np.argmin(distances, axis=1)
+        new_centroids = np.array([data[labels == i].mean(axis=0) for i in range(k)])
+        if np.all(centroids == new_centroids):
+            break
+        centroids = new_centroids
+    return centroids, labels
 
 def calculate_accuracy(labels, true_labels):
     """
