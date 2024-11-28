@@ -66,17 +66,17 @@ risk4=loss(4,1)*P1+loss(4,2)*P2+loss(4,3)*P3+loss(4,4)*P4;
 risk=[risk1 risk2 risk3 risk4]
 minriskloss=min(risk)  % find the least riskloss
 % return the category of the least riskloss as following
-  if risk1==min(risk)
-    w=1
- elseif risk2== min(risk)
-    w=2
-  elseif  risk3==min(risk)
-      w=3
-  elseif risk4==min(risk)
-    w=4    
-  else
-    return
-     end
+if risk1==min(risk)
+  w=1
+elseif risk2== min(risk)
+  w=2
+elseif  risk3==min(risk)
+    w=3
+elseif risk4==min(risk)
+  w=4    
+else
+  return
+    end
 end
   
 

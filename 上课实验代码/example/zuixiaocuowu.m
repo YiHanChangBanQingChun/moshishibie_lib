@@ -73,7 +73,7 @@ Pmax=max(P)
   if P1==max(P)
     w=1
       plot3(sample(k,1),sample(k,2),sample(k,3),'ro');grid on;hold on;
- elseif P2==max(P)
+  elseif P2==max(P)
     w=2
       plot3(sample(k,1),sample(k,2),sample(k,3),'b>');grid on;hold on;
   elseif  P3==max(P)
