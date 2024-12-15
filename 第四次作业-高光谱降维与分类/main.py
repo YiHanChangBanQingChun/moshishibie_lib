@@ -582,6 +582,7 @@ def perform_random_forest_classification(n_trees, X_train, train_label, X_test):
 def perform_deep_learning_classification(X_train, train_label, X_test, num_classes, run_output_path, epochs=100, batch_size=32):
     """
     使用深度学习（MLP）进行分类，并进行了多项优化。
+    multi-layer perceptron (MLP) classifier.
     
     参数：
     X_train (np.ndarray): 训练数据，形状为 (样本数, 特征数)。
@@ -995,7 +996,7 @@ if __name__ == "__main__":
         
         # 定义阈值并计算对应的特征数
         # threshold = 0.9973  # 3sigma的数值
-        threshold = 1.0  # 100% 的解释方差
+        threshold = 0.9999  # 100% 的解释方差
         # 进行一次 PCA 以获取累计解释方差
         pavia, rgb_pavia, test_pavia, X = load_and_preprocess_data(
             r"D:\Users\admin\Documents\MATLAB\moshishibie_lib\上课实验代码\机器学习特征提取与分类\UPavia.mat"
