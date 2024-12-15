@@ -233,7 +233,7 @@ def plot_rgb_image(rgb_pavia, run_output_path):
     plt.imshow(rgb_pavia)
     plt.title('RGB_Pavia 影像')
     plt.axis('off')
-    plt.show()
+    # plt.show()
     
     # 保存图片到运行文件夹
     filename = os.path.join(run_output_path, 'RGB_Pavia_影像.png')
@@ -258,7 +258,7 @@ def plot_cumulative_explained_variance(eig_values, run_output_path):
     plt.ylabel('累计解释方差百分比 (%)')
     plt.title('PCA 累计解释方差曲线')
     plt.grid(True)
-    plt.show()
+    # plt.show()
     
     # 保存图片到运行文件夹
     filename = os.path.join(run_output_path, 'PCA_累计解释方差曲线.png')
@@ -281,11 +281,64 @@ def plot_validation_results(labels, title="验证集正确结果", filepath='Val
     plt.imshow(labels, cmap='jet')
     plt.title(title)
     plt.axis('off')
-    plt.show()
+    # plt.show()
     
     # 保存图片到指定路径
     plt.imsave(filepath, labels, cmap='jet')
     print(f"验证集正确结果已保存至 {filepath}")
+
+def plot_accuracy_summary(results, run_output_path):
+    """
+    绘制并保存各分类方法在每个类别上的分类精度折线图，并添加平均精度的虚线。
+
+    参数：
+    results (dict): 包含各分类方法结果的字典。
+                    格式示例：
+                    {
+                        "随机森林": {
+                            "accuracy": [0.95, 0.85, 0.90, ...],
+                            "OA": 0.90,
+                            ...
+                        },
+                        ...
+                    }
+    run_output_path (str): 用于保存图像的输出路径。
+    """
+    plt.figure(figsize=(10, 6))
+    
+    # 假设所有方法的类别数相同，使用第一个方法的类别数
+    method_names = list(results.keys())
+    num_classes = len(results[method_names[0]]["accuracy"])
+    classes = list(range(1, num_classes + 1))  # 类别编号从1开始
+    
+    for method, data in results.items():
+        # 将准确率转换为百分比
+        accuracies = [acc * 100 for acc in data["accuracy"]]
+        plt.plot(classes, accuracies, marker='o', label=method)
+        
+        # 计算平均准确率
+        average_accuracy = sum(accuracies) / len(accuracies)
+        # 获取当前方法的颜色
+        line = plt.gca().get_lines()[-1]
+        color = line.get_color()
+        # 绘制平均准确率的虚线
+        plt.hlines(average_accuracy, xmin=1-1, xmax=num_classes+1, colors=color, linestyles='dashed')
+    
+    plt.xlabel('类别')
+    plt.ylabel('分类正确率 (%)')
+    plt.title('各分类方法在每个类别上的分类正确率')
+    plt.xticks(classes)  # 确保x轴显示每个类别
+    plt.ylim(0, 105)     # 分类正确率范围设置为0%到100%
+    plt.xlim(1-1, num_classes+1)  # x轴范围从1到类别数
+    plt.grid(True)
+    plt.legend()
+    
+    # 保存图像
+    summary_plot_path = os.path.join(run_output_path, '分类精度汇总折线图.png')
+    plt.savefig(summary_plot_path)
+    # plt.show()
+    
+    print(f"分类精度汇总折线图已保存至 {summary_plot_path}")
 
 def PCA(data, n_components):
     """
@@ -629,7 +682,7 @@ def main(run_output_path):
     plot_rgb_image(rgb_pavia, run_output_path)
 
     # 选择训练样本的数量
-    numsample = 100  # 每类样本选择 100 个
+    numsample = 800  # 每类样本选择 100 个
     trainlabels, testlabels = getlabeled(test_pavia, numsample)
 
     print('总体训练样本的数量为:')
@@ -772,7 +825,7 @@ def main(run_output_path):
         plt.imshow(outpca_display, cmap='jet')
         plt.title(f'{name} 分类结果')
         plt.axis('off')
-        plt.show()
+        # plt.show()
         
         # 保存分类结果
         OA_percentage = OA * 100
@@ -800,6 +853,9 @@ def main(run_output_path):
                                 'Validation_Truth.png'
                             )
                         )
+
+    # 添加分类精度汇总折线图
+    plot_accuracy_summary(results, run_output_path)
 
     keep_figures_open()
 
