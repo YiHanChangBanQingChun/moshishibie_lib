@@ -98,7 +98,6 @@ function simulate_classification_runs(num_runs, filepath, k, fid)
     plot_per_class_accuracy(per_class_acc, num_runs, 9);
 end
 
-% 函数定义
 function [train_data, train_labels, test_data, test_labels, unique_labels, num_classes] = load_and_split_data(filepath)
     % 加载并分割数据
     load(filepath); %#ok<LOAD>
