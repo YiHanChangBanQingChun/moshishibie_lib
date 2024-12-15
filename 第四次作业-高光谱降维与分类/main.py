@@ -1,3 +1,17 @@
+"""
+Author: 
+    gzhu GIS221 yhcbqc
+Last update: 
+    2024-12-15
+Description: 
+    机器学习对遥感影像的特征提取与分类
+Tips:
+1. 请确保已安装以下库：numpy, scipy, matplotlib, scikit-learn, tensorflow
+2. 请确保已下载 UPavia.mat 数据集文件
+3. 请将本脚本与 UPavia.mat 文件放在同一文件夹下运行
+4. 请确保已设置环境变量 RUN_OUTPUT_PATH，用于保存运行结果
+"""
+
 import os
 import time
 import scipy.io
