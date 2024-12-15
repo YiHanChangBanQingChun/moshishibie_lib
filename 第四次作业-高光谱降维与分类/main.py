@@ -727,7 +727,7 @@ def perform_classification(run_output_path, n_components=None):
     plot_rgb_image(rgb_pavia, run_output_path)
 
     # 选择训练样本的数量
-    numsample = 100  # 每类样本选择 800 个
+    numsample = 800  # 每类样本选择 800 个
     trainlabels, testlabels = getlabeled(test_pavia, numsample)
 
     print('总体训练样本的数量为:')
@@ -971,8 +971,8 @@ def plot_overall_accuracy_vs_features(overall_results, run_output_path):
 if __name__ == "__main__":
     # 选择是否运行总体精度随特征数变化的功能
     # 设置为 True 运行特征数变化，False 运行单次分类
-    # RUN_FEATURE_VARIATION = False 
-    RUN_FEATURE_VARIATION = True
+    RUN_FEATURE_VARIATION = False
+    # RUN_FEATURE_VARIATION = True
     
     # 指定基础输出路径
     base_output_path = r"D:\Users\admin\Documents\MATLAB\moshishibie_lib\第四次作业-高光谱降维与分类\outputs"
@@ -994,7 +994,8 @@ if __name__ == "__main__":
         print(f"总日志已保存至 {general_log_file}")
         
         # 定义阈值并计算对应的特征数
-        threshold = 0.9973  # 3sigma的数值
+        # threshold = 0.9973  # 3sigma的数值
+        threshold = 1.0  # 100% 的解释方差
         # 进行一次 PCA 以获取累计解释方差
         pavia, rgb_pavia, test_pavia, X = load_and_preprocess_data(
             r"D:\Users\admin\Documents\MATLAB\moshishibie_lib\上课实验代码\机器学习特征提取与分类\UPavia.mat"
@@ -1003,7 +1004,7 @@ if __name__ == "__main__":
         eig_vectors_full, eig_values_full, mean_data, _ = perform_pca(Xtrain)
         cumulative_explained_variance = np.cumsum(eig_values_full) / np.sum(eig_values_full)
         n_features_threshold = np.argmax(cumulative_explained_variance >= threshold) + 1
-        max_features = n_features_threshold + 10
+        max_features = n_features_threshold + 40  # 设置最大特征数
         
         overall_results = {}  # 保存总体精度
         
