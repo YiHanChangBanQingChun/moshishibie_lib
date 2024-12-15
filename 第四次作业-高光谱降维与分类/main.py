@@ -293,27 +293,17 @@ def plot_accuracy_summary(results, run_output_path):
 
     参数：
     results (dict): 包含各分类方法结果的字典。
-                    格式示例：
-                    {
-                        "随机森林": {
-                            "accuracy": [0.95, 0.85, 0.90, ...],
-                            "OA": 0.90,
-                            ...
-                        },
-                        ...
-                    }
     run_output_path (str): 用于保存图像的输出路径。
     """
     plt.figure(figsize=(10, 6))
     
-    # 假设所有方法的类别数相同，使用第一个方法的类别数
     method_names = list(results.keys())
     num_classes = len(results[method_names[0]]["accuracy"])
     classes = list(range(1, num_classes + 1))  # 类别编号从1开始
     
     for method, data in results.items():
-        # 将准确率转换为百分比
-        accuracies = [acc * 100 for acc in data["accuracy"]]
+        # 移除对 accuracy 的二次乘以 100
+        accuracies = data["accuracy"]  # 已经是百分比
         plt.plot(classes, accuracies, marker='o', label=method)
         
         # 计算平均准确率
@@ -339,6 +329,47 @@ def plot_accuracy_summary(results, run_output_path):
     # plt.show()
     
     print(f"分类精度汇总折线图已保存至 {summary_plot_path}")
+
+def plot_overall_accuracy_vs_features(overall_results, run_output_path):
+    """
+    绘制总体分类正确率随特征数变化的折线图。
+    
+    参数：
+    overall_results (dict): 包含各分类方法在不同特征数下的总体正确率。
+                            格式示例：
+                            {
+                                "特征数1": {"随机森林": 85.0, "SVM": 80.0, ...},
+                                "特征数2": {"随机森林": 86.0, "SVM": 81.5, ...},
+                                ...
+                            }
+    run_output_path (str): 用于保存图像的输出路径。
+    """
+    plt.figure(figsize=(10, 6))
+    
+    # 获取所有方法名称
+    methods = list(next(iter(overall_results.values())).keys())
+    
+    # 获取所有特征数并排序
+    feature_counts = sorted([int(k) for k in overall_results.keys()])
+    
+    for method in methods:
+        accuracies = [overall_results[str(f)][method] for f in feature_counts]
+        plt.plot(feature_counts, accuracies, marker='o', label=method)
+    
+    plt.xlabel('特征数')
+    plt.ylabel('总体分类正确率 (%)')
+    plt.title('总体分类正确率随特征数的变化')
+    plt.xticks(feature_counts)  # 确保x轴显示每个特征数
+    plt.ylim(0, 100)           # 分类正确率范围设置为0%到100%
+    plt.grid(True)
+    plt.legend()
+    
+    # 保存图像
+    summary_plot_path = os.path.join(run_output_path, '总体分类正确率随特征数变化.png')
+    plt.savefig(summary_plot_path)
+    plt.close()
+    
+    print(f"总体分类正确率随特征数变化图已保存至 {summary_plot_path}")
 
 def PCA(data, n_components):
     """
@@ -663,10 +694,16 @@ def keep_figures_open():
         plt.close('all')  # 关闭所有画布
 
 @log_prints
-def main(run_output_path):
+def perform_classification(run_output_path, n_components=None):
     """
-    - 运行多种分类方法（优化KNN、KNN、RF、SVM、深度学习）
-    - 存储和比较每种方法的分类结果
+    运行多个分类方法，并返回各方法的总体分类正确率（OA）。
+    
+    参数：
+    run_output_path (str): 用于保存输出文件的路径。
+    n_components (int, optional): PCA 降维后的主成分数。如果为 None，则自动确定。
+    
+    返回：
+    dict: 包含各分类方法总体分类正确率的字典。
     """
     set_fig_zhcn()
     
@@ -682,7 +719,7 @@ def main(run_output_path):
     plot_rgb_image(rgb_pavia, run_output_path)
 
     # 选择训练样本的数量
-    numsample = 800  # 每类样本选择 100 个
+    numsample = 100  # 每类样本选择 800 个
     trainlabels, testlabels = getlabeled(test_pavia, numsample)
 
     print('总体训练样本的数量为:')
@@ -697,17 +734,18 @@ def main(run_output_path):
     # 将训练样本重塑为二维数组
     Xtrain = Xtrain.reshape(-1, pavia.shape[2])
 
-    # 对训练数据进行 PCA 分析，不截断特征值和特征向量
-    eig_vectors_full, eig_values_full, mean_data, _ = perform_pca(Xtrain)
-
-    # 绘制累计解释方差曲线
-    cumulative_explained_variance = plot_cumulative_explained_variance(eig_values_full, run_output_path)
-
-    # 设置累计解释方差阈值，根据阈值选择主成分数量
-    threshold = 0.9999  # 累计解释方差阈值
-    n_components = np.argmax(cumulative_explained_variance >= threshold) + 1
-    print(f"选择前 {n_components} 个主成分可达到 {round(threshold * 100, 4)}% 的累计解释方差。")
-
+    # 对训练数据进行 PCA 降维
+    if n_components is None:
+        eig_vectors_full, eig_values_full, mean_data, _ = perform_pca(Xtrain)
+        # 计算累计解释方差
+        cumulative_explained_variance = np.cumsum(eig_values_full) / np.sum(eig_values_full)
+        # 设定阈值
+        threshold = 0.9999
+        n_components = np.argmax(cumulative_explained_variance >= threshold) + 1
+        print(f"选择前 {n_components} 个主成分可达到 {round(threshold * 100, 4)}% 的累计解释方差。")
+    else:
+        eig_vectors, eig_values, mean_data, Xtr = perform_pca(Xtrain, n_components)
+    
     # 使用选定的 n_components 重新进行 PCA 降维
     eig_vectors, eig_values, mean_data, Xtr = perform_pca(Xtrain, n_components)
     
@@ -719,11 +757,11 @@ def main(run_output_path):
     classifiers = {
         "优化KNN": {
             "type": "knn",
-            "params": {"k": 1, "optimized": True}  # 优化后的KNN
+            "params": {"k": 1, "optimized": True}
         },
         # "KNN": {
         #     "type": "knn",
-        #     "params": {"k": 1, "optimized": False}  # 非优化的KNN
+        #     "params": {"k": 1, "optimized": False}
         # },
         "随机森林": {
             "type": "rf",
@@ -733,10 +771,10 @@ def main(run_output_path):
             "type": "svm",
             "params": {"kernel_type": "poly"}
         },
-        "深度学习": {
-            "type": "dl",
-            "params": {"num_classes": class_num, "epochs": 100, "batch_size": 32}
-        }
+        # "深度学习": {
+        #     "type": "dl",
+        #     "params": {"num_classes": class_num, "epochs": 100, "batch_size": 32}
+        # }
     }
 
     results = {}
@@ -745,7 +783,6 @@ def main(run_output_path):
         print(f"\n=== 运行分类方法：{name} ===")
         if classifier["type"] == "knn":
             if classifier["params"]["optimized"]:
-                # 优化后的KNN（使用scikit-learn的KNeighborsClassifier）
                 knn_classifier = KNeighborsClassifier(
                     n_neighbors=classifier["params"]["k"], 
                     algorithm='auto', 
@@ -758,7 +795,6 @@ def main(run_output_path):
                     Xts
                 )
             else:
-                # 非优化的KNN（使用自定义的knn函数）
                 testResults = knn(
                     k=classifier["params"]["k"], 
                     data_train=Xtr, 
@@ -790,7 +826,7 @@ def main(run_output_path):
                 train_label=train_label,
                 X_test=Xts,
                 num_classes=classifier["params"]["num_classes"],
-                run_output_path=run_output_path,  # 传递 run_output_path
+                run_output_path=run_output_path,
                 epochs=classifier["params"]["epochs"],
                 batch_size=classifier["params"]["batch_size"]
             )
@@ -806,8 +842,8 @@ def main(run_output_path):
         
         # 存储结果
         results[name] = {
-            "accuracy": accuracy,
-            "OA": OA,
+            "accuracy": [acc * 100 for acc in accuracy],  # 转换为百分比
+            "OA": OA * 100,
             "outpca_display": outpca.copy()
         }
         
@@ -825,50 +861,164 @@ def main(run_output_path):
         plt.imshow(outpca_display, cmap='jet')
         plt.title(f'{name} 分类结果')
         plt.axis('off')
-        # plt.show()
         
         # 保存分类结果
         OA_percentage = OA * 100
         filename = os.path.join(run_output_path, f'Upavia_{name}_{OA_percentage:.2f}_.png')
         plt.imsave(filename, outpca_display, cmap='jet')
+        plt.close()
     
     # 比较五种方法的分类结果
     print("\n=== 分类方法比较 ===")
     for name, res in results.items():
         print(f"\n分类方法：{name}")
-        print(f"总体分类正确率（OA）: {res['OA'] * 100:.2f}%")
+        print(f"总体分类正确率（OA）: {res['OA']:.2f}%")
         for i, acc in enumerate(res["accuracy"], 1):
-            print(f"第 {i} 类正确率： {acc * 100:.2f}%")
+            print(f"第 {i} 类正确率： {acc:.2f}%")
     
     # 简要分析结果（示例）
     print("\n=== 简要分析 ===")
     best_method = max(results.items(), key=lambda x: x[1]["OA"])
-    print(f"最佳分类方法是：{best_method[0]}，总体分类正确率为 {best_method[1]['OA'] * 100:.2f}%")
+    print(f"最佳分类方法是：{best_method[0]}，总体分类正确率为 {best_method[1]['OA']:.2f}%")
     
     # 绘制验证集的正确结果
-    plot_validation_results(test_pavia, 
-                            title="验证集正确结果", 
-                            filepath=os.path.join(
-                                run_output_path, 
-                                'Validation_Truth.png'
-                            )
-                        )
+    plot_validation_results(
+        test_pavia, 
+        title="验证集正确结果", 
+        filepath=os.path.join(
+            run_output_path, 
+            'Validation_Truth.png'
+        )
+    )
 
-    # 添加分类精度汇总折线图
+    # 返回总体分类正确率
+    # return {name: res["OA"] for name, res in results.items()}
+    return results
+
+def classification_run(run_output_path, n_components=None):
+    """
+    封装的分类运行函数，用于单次分类或特征数变化分类。
+    
+    参数：
+    run_output_path (str): 用于保存输出文件的路径。
+    n_components (int, optional): PCA 降维后的主成分数。如果为 None，则自动确定。
+    
+    返回：
+    dict: 包含各分类方法总体分类正确率的字典。
+    """
+    # 以关键字参数形式传递 run_output_path
+    results = perform_classification(run_output_path=run_output_path, n_components=n_components)
+    
+    # 提取总体分类正确率（OA）
+    overall_oas = {name: res["OA"] for name, res in results.items()}
+    
+    # 绘制分类精度汇总折线图
     plot_accuracy_summary(results, run_output_path)
-
+    
     keep_figures_open()
+    
+    return overall_oas
+
+def plot_overall_accuracy_vs_features(overall_results, run_output_path):
+    """
+    绘制总体分类正确率随特征数变化的折线图。
+    
+    参数：
+    overall_results (dict): 包含各分类方法在不同特征数下的总体正确率。
+                            格式示例：
+                            {
+                                "1": {"随机森林": 85.0, "SVM": 80.0, ...},
+                                "2": {"随机森林": 86.0, "SVM": 81.5, ...},
+                                ...
+                            }
+    run_output_path (str): 用于保存图像的输出路径。
+    """
+    plt.figure(figsize=(10, 6))
+    
+    # 获取所有方法名称
+    methods = list(next(iter(overall_results.values())).keys())
+    
+    # 获取所有特征数并排序
+    feature_counts = sorted([int(k) for k in overall_results.keys()])
+    
+    for method in methods:
+        accuracies = [overall_results[str(f)][method] for f in feature_counts]
+        plt.plot(feature_counts, accuracies, marker='o', label=method)
+    
+    plt.xlabel('特征数')
+    plt.ylabel('总体分类正确率 (%)')
+    plt.title('总体分类正确率随特征数的变化')
+    plt.xticks(feature_counts)  # 确保x轴显示每个特征数
+    plt.ylim(0, 100)           # 分类正确率范围设置为0%到100%
+    plt.grid(True)
+    plt.legend()
+    
+    # 保存图像
+    summary_plot_path = os.path.join(run_output_path, '总体分类正确率随特征数变化.png')
+    plt.savefig(summary_plot_path)
+    plt.close()
+    
+    print(f"总体分类正确率随特征数变化图已保存至 {summary_plot_path}")
 
 if __name__ == "__main__":
-    # 指定输出路径
+    # 选择是否运行总体精度随特征数变化的功能
+    RUN_FEATURE_VARIATION = False  # 设置为 True 运行特征数变化，False 运行单次分类
+    
+    # 指定基础输出路径
     base_output_path = r"D:\Users\admin\Documents\MATLAB\moshishibie_lib\第四次作业-高光谱降维与分类\outputs"
     
-    # 创建时间戳文件夹
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_output_path = os.path.join(base_output_path, f"run_{timestamp}")
-    os.makedirs(run_output_path, exist_ok=True)
+    if RUN_FEATURE_VARIATION:
+        # 创建以特征数变化为名字的文件夹
+        feature_variation_path = os.path.join(base_output_path, "feature_variation")
+        os.makedirs(feature_variation_path, exist_ok=True)
+        
+        # 设置总的日志文件
+        general_log_file = os.path.join(feature_variation_path, "LOG_GENERAL.txt")
+        with open(general_log_file, 'w', encoding='utf-8') as f_general:
+            original_stdout = sys.stdout
+            sys.stdout = DualLogger(original_stdout, f_general)
+            try:
+                print("=== 运行特征数变化 ===")
+            finally:
+                sys.stdout = original_stdout
+        print(f"总日志已保存至 {general_log_file}")
+        
+        # 定义阈值并计算对应的特征数
+        threshold = 0.9973
+        # 进行一次 PCA 以获取累计解释方差
+        pavia, rgb_pavia, test_pavia, X = load_and_preprocess_data(
+            r"D:\Users\admin\Documents\MATLAB\moshishibie_lib\上课实验代码\机器学习特征提取与分类\UPavia.mat"
+        )
+        Xtrain = X.reshape(-1, X.shape[2])
+        eig_vectors_full, eig_values_full, mean_data, _ = perform_pca(Xtrain)
+        cumulative_explained_variance = np.cumsum(eig_values_full) / np.sum(eig_values_full)
+        n_features_threshold = np.argmax(cumulative_explained_variance >= threshold) + 1
+        max_features = n_features_threshold + 5
+        
+        overall_results = {}  # 保存总体精度
+        
+        for n in range(1, max_features + 1):
+            print(f"\n=== 运行特征数：{n} ===")
+            # 为每个特征数创建子文件夹
+            current_run_path = os.path.join(feature_variation_path, f"features_{n}")
+            os.makedirs(current_run_path, exist_ok=True)
+            
+            # 运行分类并获取总体精度
+            oas = classification_run(current_run_path, n)
+            
+            # 保存总体精度结果
+            overall_results[str(n)] = oas
+        
+        # 绘制总体精度随特征数变化图
+        plot_overall_accuracy_vs_features(overall_results, feature_variation_path)
     
-    print(f"所有输出文件将保存在: {run_output_path}")  # 添加此行用于验证路径
-    
-    # 调用 main 函数并传递 run_output_path
-    main(run_output_path=run_output_path)
+    else:
+        # 创建时间戳文件夹
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        run_output_path = os.path.join(base_output_path, f"run_{timestamp}")
+        os.makedirs(run_output_path, exist_ok=True)
+        
+        print(f"所有输出文件将保存在: {run_output_path}")  # 添加此行用于验证路径
+        
+        # 调用分类运行函数并获取总体精度
+        overall_oas = classification_run(run_output_path, n_components=None)  # n_components为None，自动确定
