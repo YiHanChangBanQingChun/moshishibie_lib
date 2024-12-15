@@ -51,15 +51,15 @@ Xts=X*M; % 降维后的总数据特征
 
 % *** 分类器使用说明：用到哪个分类器，就把哪个分类器的注释去掉，程序就可运行 ***
 % ==========(1)KNN分类器==============
-% k = 1;
-% class_results = knn(k, Xtr', train_label, Xts'); %Xts输入为总数据，class_results输出为总的预测输出结果
-%     if k == 1
-%         testResults = class_results; % 命名有歧义，容易误导
-%     else
-%         [maxCount,idx] = max(class_results);  
-%         testResults = maxCount;    
-%     end
-% outpca=reshape(testResults,size(Data,1),size(Data,2)); %#ok<NASGU> % outpca为PCA特征下影像总的预测输出结果
+k = 1;
+class_results = knn(k, Xtr', train_label, Xts'); %Xts输入为总数据，class_results输出为总的预测输出结果
+    if k == 1
+        testResults = class_results; % 命名有歧义，容易误导
+    else
+        [maxCount,idx] = max(class_results);  
+        testResults = maxCount;    
+    end
+outpca=reshape(testResults,size(Data,1),size(Data,2)); %#ok<NASGU> % outpca为PCA特征下影像总的预测输出结果
 
 % ==========(2)随机森林分类器==============
 % nTrees = 100; %设置随机森林分类树的数量
