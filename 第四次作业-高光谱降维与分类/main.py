@@ -229,16 +229,23 @@ def plot_rgb_image(rgb_pavia, run_output_path):
     rgb_pavia (np.ndarray): RGB 影像数据。
     run_output_path (str): 运行文件夹路径，用于保存图片。
     """
-    plt.figure()
-    plt.imshow(rgb_pavia)
-    plt.title('RGB_Pavia 影像')
-    plt.axis('off')
-    # plt.show()
-    
+    # 不显示，只保存图片
     # 保存图片到运行文件夹
     filename = os.path.join(run_output_path, 'RGB_Pavia_影像.png')
     plt.imsave(filename, rgb_pavia)
     print(f"RGB 影像已保存至 {filename}")
+
+    # 显示图片，保存图片
+    # plt.figure()
+    # plt.imshow(rgb_pavia)
+    # plt.title('RGB_Pavia 影像')
+    # plt.axis('off')
+    # # plt.show()
+    
+    # # 保存图片到运行文件夹
+    # filename = os.path.join(run_output_path, 'RGB_Pavia_影像.png')
+    # plt.imsave(filename, rgb_pavia)
+    # print(f"RGB 影像已保存至 {filename}")
 
 def plot_cumulative_explained_variance(eig_values, run_output_path):
     """
@@ -281,6 +288,7 @@ def plot_validation_results(labels, title="验证集正确结果", filepath='Val
     plt.imshow(labels, cmap='jet')
     plt.title(title)
     plt.axis('off')
+    plt.close()  # 关闭图形，不显示
     # plt.show()
     
     # 保存图片到指定路径
@@ -302,8 +310,8 @@ def plot_accuracy_summary(results, run_output_path):
     classes = list(range(1, num_classes + 1))  # 类别编号从1开始
     
     for method, data in results.items():
-        # 移除对 accuracy 的二次乘以 100
-        accuracies = data["accuracy"]  # 已经是百分比
+        # 已经是百分比
+        accuracies = data["accuracy"]
         plt.plot(classes, accuracies, marker='o', label=method)
         
         # 计算平均准确率
@@ -312,21 +320,21 @@ def plot_accuracy_summary(results, run_output_path):
         line = plt.gca().get_lines()[-1]
         color = line.get_color()
         # 绘制平均准确率的虚线
-        plt.hlines(average_accuracy, xmin=1-1, xmax=num_classes+1, colors=color, linestyles='dashed')
+        plt.hlines(average_accuracy, xmin=0, xmax=num_classes + 1, colors=color, linestyles='dashed')
     
     plt.xlabel('类别')
     plt.ylabel('分类正确率 (%)')
     plt.title('各分类方法在每个类别上的分类正确率')
     plt.xticks(classes)  # 确保x轴显示每个类别
     plt.ylim(0, 105)     # 分类正确率范围设置为0%到100%
-    plt.xlim(1-1, num_classes+1)  # x轴范围从1到类别数
+    plt.xlim(0, num_classes + 1)  # x轴范围从1到类别数
     plt.grid(True)
     plt.legend()
     
     # 保存图像
     summary_plot_path = os.path.join(run_output_path, '分类精度汇总折线图.png')
     plt.savefig(summary_plot_path)
-    # plt.show()
+    plt.close()  # 关闭图形，不显示
     
     print(f"分类精度汇总折线图已保存至 {summary_plot_path}")
 
@@ -771,10 +779,10 @@ def perform_classification(run_output_path, n_components=None):
             "type": "svm",
             "params": {"kernel_type": "poly"}
         },
-        # "深度学习": {
-        #     "type": "dl",
-        #     "params": {"num_classes": class_num, "epochs": 100, "batch_size": 32}
-        # }
+        "深度学习": {
+            "type": "dl",
+            "params": {"num_classes": class_num, "epochs": 100, "batch_size": 32}
+        }
     }
 
     results = {}
@@ -962,7 +970,9 @@ def plot_overall_accuracy_vs_features(overall_results, run_output_path):
 
 if __name__ == "__main__":
     # 选择是否运行总体精度随特征数变化的功能
-    RUN_FEATURE_VARIATION = False  # 设置为 True 运行特征数变化，False 运行单次分类
+    # 设置为 True 运行特征数变化，False 运行单次分类
+    # RUN_FEATURE_VARIATION = False 
+    RUN_FEATURE_VARIATION = True
     
     # 指定基础输出路径
     base_output_path = r"D:\Users\admin\Documents\MATLAB\moshishibie_lib\第四次作业-高光谱降维与分类\outputs"
@@ -984,16 +994,16 @@ if __name__ == "__main__":
         print(f"总日志已保存至 {general_log_file}")
         
         # 定义阈值并计算对应的特征数
-        threshold = 0.9973
+        threshold = 0.9973  # 3sigma的数值
         # 进行一次 PCA 以获取累计解释方差
         pavia, rgb_pavia, test_pavia, X = load_and_preprocess_data(
             r"D:\Users\admin\Documents\MATLAB\moshishibie_lib\上课实验代码\机器学习特征提取与分类\UPavia.mat"
         )
-        Xtrain = X.reshape(-1, X.shape[2])
+        Xtrain = X
         eig_vectors_full, eig_values_full, mean_data, _ = perform_pca(Xtrain)
         cumulative_explained_variance = np.cumsum(eig_values_full) / np.sum(eig_values_full)
         n_features_threshold = np.argmax(cumulative_explained_variance >= threshold) + 1
-        max_features = n_features_threshold + 5
+        max_features = n_features_threshold + 10
         
         overall_results = {}  # 保存总体精度
         
