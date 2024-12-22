@@ -1,0 +1,122 @@
+[CV 1/5] END ...C=0.1, gamma=scale, kernel=poly;, score=0.239 total time=  13.6s
+[CV 2/5] END ...C=0.1, gamma=scale, kernel=poly;, score=0.246 total time=  14.1s
+[CV 5/5] END ....C=0.1, gamma=scale, kernel=rbf;, score=0.315 total time=  16.5s
+[CV 3/5] END ....C=0.1, gamma=scale, kernel=rbf;, score=0.319 total time=  17.5s
+[CV 2/5] END ....C=0.1, gamma=scale, kernel=rbf;, score=0.306 total time=  17.6s
+[CV 4/5] END ....C=0.1, gamma=scale, kernel=rbf;, score=0.319 total time=  17.9s
+[CV 1/5] END ....C=0.1, gamma=scale, kernel=rbf;, score=0.317 total time=  18.1s
+[CV 3/5] END ...C=0.1, gamma=scale, kernel=poly;, score=0.240 total time=  13.6s
+[CV 4/5] END ...C=0.1, gamma=scale, kernel=poly;, score=0.238 total time=  13.2s
+[CV 5/5] END ...C=0.1, gamma=scale, kernel=poly;, score=0.236 total time=  13.1s
+[CV 1/5] END ......C=1, gamma=scale, kernel=rbf;, score=0.331 total time=  16.4s
+[CV 2/5] END ......C=1, gamma=scale, kernel=rbf;, score=0.317 total time=  15.2s
+[CV 3/5] END ......C=1, gamma=scale, kernel=rbf;, score=0.334 total time=  15.8s
+[CV 4/5] END ......C=1, gamma=scale, kernel=rbf;, score=0.339 total time=  16.3s
+[CV 5/5] END ......C=1, gamma=scale, kernel=rbf;, score=0.324 total time=  15.7s
+[CV 1/5] END .....C=1, gamma=scale, kernel=poly;, score=0.241 total time=  15.3s
+[CV 2/5] END .....C=1, gamma=scale, kernel=poly;, score=0.258 total time=  15.7s
+[CV 3/5] END .....C=1, gamma=scale, kernel=poly;, score=0.250 total time=  16.5s
+[CV 4/5] END .....C=1, gamma=scale, kernel=poly;, score=0.245 total time=  16.1s
+[CV 5/5] END .....C=1, gamma=scale, kernel=poly;, score=0.242 total time=  15.8s
+[CV 2/5] END C=0.1, gamma=scale, kernel=linear;, score=0.609 total time=363.9min
+[CV 1/5] END C=0.1, gamma=scale, kernel=linear;, score=0.619 total time=388.6min
+[CV 4/5] END C=0.1, gamma=scale, kernel=linear;, score=0.610 total time=391.1min
+[CV 5/5] END ..C=1, gamma=scale, kernel=linear;, score=0.618 total time=413.2min
+[CV 1/5] END .....C=10, gamma=scale, kernel=rbf;, score=0.355 total time=  15.9s
+[CV 2/5] END .....C=10, gamma=scale, kernel=rbf;, score=0.357 total time=  15.8s
+[CV 3/5] END .....C=10, gamma=scale, kernel=rbf;, score=0.366 total time=  15.6s
+[CV 4/5] END .....C=10, gamma=scale, kernel=rbf;, score=0.372 total time=  15.2s
+[CV 5/5] END .....C=10, gamma=scale, kernel=rbf;, score=0.360 total time=  15.6s
+[CV 1/5] END ....C=10, gamma=scale, kernel=poly;, score=0.248 total time=  29.5s
+[CV 2/5] END ....C=10, gamma=scale, kernel=poly;, score=0.253 total time=  27.5s
+[CV 3/5] END ....C=10, gamma=scale, kernel=poly;, score=0.260 total time=  26.2s
+[CV 4/5] END ....C=10, gamma=scale, kernel=poly;, score=0.247 total time=  28.2s
+[CV 5/5] END ....C=10, gamma=scale, kernel=poly;, score=0.248 total time=  26.9s
+[CV 3/5] END C=0.1, gamma=scale, kernel=linear;, score=0.610 total time=419.4min
+[CV 2/5] END ..C=1, gamma=scale, kernel=linear;, score=0.608 total time=424.7min
+[CV 1/5] END .C=10, gamma=scale, kernel=linear;, score=0.625 total time=429.8min
+[CV 1/5] END ..C=1, gamma=scale, kernel=linear;, score=0.619 total time=442.1min
+[CV 4/5] END ..C=1, gamma=scale, kernel=linear;, score=0.614 total time=444.2min
+[CV 1/5] END ....C=100, gamma=scale, kernel=rbf;, score=0.454 total time=  17.5s
+[CV 2/5] END ....C=100, gamma=scale, kernel=rbf;, score=0.448 total time=  18.1s
+[CV 3/5] END ....C=100, gamma=scale, kernel=rbf;, score=0.444 total time=  17.6s
+[CV 4/5] END ....C=100, gamma=scale, kernel=rbf;, score=0.461 total time=  18.8s
+[CV 5/5] END ....C=100, gamma=scale, kernel=rbf;, score=0.448 total time=  17.7s
+[CV 3/5] END ..C=1, gamma=scale, kernel=linear;, score=0.616 total time=446.4min
+[CV 1/5] END ...C=100, gamma=scale, kernel=poly;, score=0.252 total time= 1.7min
+[CV 2/5] END ...C=100, gamma=scale, kernel=poly;, score=0.258 total time= 1.8min
+[CV 3/5] END ...C=100, gamma=scale, kernel=poly;, score=0.263 total time= 1.7min
+[CV 4/5] END ...C=100, gamma=scale, kernel=poly;, score=0.252 total time= 1.5min
+[CV 5/5] END ...C=100, gamma=scale, kernel=poly;, score=0.253 total time= 1.4min
+
+
+
+
+
+
+
+
+
+
+C:\Users\admin\AppData\Roaming\Python\Python311\site-packages\sklearn\base.py:493: FutureWarning: `BaseEstimator._check_feature_names` is deprecated in 1.6 and will be removed in 1.7. Use `sklearn.utils.validation._check_feature_names` instead.
+  warnings.warn(
+[CV 5/5] END learning_rate=0.01, max_depth=3, n_estimators=100;, score=0.690 total time= 1.3min
+[CV 4/5] END learning_rate=0.01, max_depth=3, n_estimators=100;, score=0.690 total time= 1.3min
+;, score=0.744 total time= 2.1min
+[CV 3/5] END learning_rate=0.01, max_depth=5, n_estimators=100;, score=0.763 total time= 2.1min
+[CV 5/5] END learning_rate=0.01, max_depth=5, n_estimators=100;, score=0.745 total time= 2.1min
+[CV 4/5] END learning_rate=0.01, max_depth=3, n_estimators=300;, score=0.742 total time= 3.8min
+[CV 5/5] END learning_rate=0.01, max_depth=3, n_estimators=300;, score=0.741 total time= 3.8min
+[CV 3/5] END learning_rate=0.01, max_depth=3, n_estimators=300;, score=0.762 total time= 3.9min
+[CV 1/5] END learning_rate=0.01, max_depth=5, n_estimators=200;, score=0.764 total time= 4.4min
+[CV 2/5] END learning_rate=0.01, max_depth=5, n_estimators=200;, score=0.772 total time= 4.4min
+[CV 4/5] END learning_rate=0.01, max_depth=5, n_estimators=200;, score=0.780 total time= 4.3min
+[CV 3/5] END learning_rate=0.01, max_depth=5, n_estimators=200;, score=0.787 total time= 4.3min
+[CV 1/5] END learning_rate=0.01, max_depth=7, n_estimators=100;, score=0.781 total time= 3.1min
+[CV 5/5] END learning_rate=0.01, max_depth=5, n_estimators=200;, score=0.772 total time= 4.3min
+[CV 2/5] END learning_rate=0.01, max_depth=7, n_estimators=100;, score=0.775 total time= 3.1min
+[CV 3/5] END learning_rate=0.01, max_depth=7, n_estimators=100;, score=0.805 total time= 3.1min
+[CV 4/5] END learning_rate=0.01, max_depth=7, n_estimators=100;, score=0.794 total time= 3.1min
+[CV 1/5] END learning_rate=0.01, max_depth=5, n_estimators=300;, score=0.782 total time= 6.9min
+[CV 5/5] END learning_rate=0.01, max_depth=7, n_estimators=100;, score=0.791 total time= 3.3min
+[CV 4/5] END learning_rate=0.01, max_depth=5, n_estimators=300;, score=0.800 total time= 6.7min
+[CV 3/5] END learning_rate=0.01, max_depth=5, n_estimators=300;, score=0.810 total time= 6.8min
+[CV 2/5] END learning_rate=0.01, max_depth=5, n_estimators=300;, score=0.786 total time= 7.0min
+[CV 5/5] END learning_rate=0.01, max_depth=5, n_estimators=300;, score=0.790 total time= 6.7min
+[CV 1/5] END learning_rate=0.1, max_depth=3, n_estimators=100;, score=0.782 total time= 1.4min
+[CV 2/5] END learning_rate=0.1, max_depth=3, n_estimators=100;, score=0.784 total time= 1.4min
+[CV 3/5] END learning_rate=0.1, max_depth=3, n_estimators=100;, score=0.812 total time= 1.3min
+[CV 1/5] END learning_rate=0.01, max_depth=7, n_estimators=200;, score=0.806 total time= 6.6min
+[CV 4/5] END learning_rate=0.1, max_depth=3, n_estimators=100;, score=0.795 total time= 1.3min
+[CV 4/5] END learning_rate=0.01, max_depth=7, n_estimators=200;, score=0.819 total time= 6.5min
+[CV 3/5] END learning_rate=0.01, max_depth=7, n_estimators=200;, score=0.826 total time= 6.5min
+[CV 2/5] END learning_rate=0.01, max_depth=7, n_estimators=200;, score=0.797 total time= 6.6min
+[CV 5/5] END learning_rate=0.1, max_depth=3, n_estimators=100;, score=0.802 total time= 1.3min
+[CV 5/5] END learning_rate=0.01, max_depth=7, n_estimators=200;, score=0.813 total time= 6.4min
+[CV 1/5] END learning_rate=0.1, max_depth=3, n_estimators=200;, score=0.800 total time= 2.7min
+[CV 2/5] END learning_rate=0.1, max_depth=3, n_estimators=200;, score=0.799 total time= 2.7min
+[CV 4/5] END learning_rate=0.1, max_depth=3, n_estimators=200;, score=0.822 total time= 2.7min
+[CV 3/5] END learning_rate=0.1, max_depth=3, n_estimators=200;, score=0.833 total time= 2.7min
+[CV 5/5] END learning_rate=0.1, max_depth=3, n_estimators=200;, score=0.822 total time= 2.7min
+[CV 1/5] END learning_rate=0.1, max_depth=5, n_estimators=100;, score=0.821 total time= 2.3min
+[CV 2/5] END learning_rate=0.1, max_depth=5, n_estimators=100;, score=0.817 total time= 2.3min
+[CV 1/5] END learning_rate=0.1, max_depth=3, n_estimators=300;, score=0.810 total time= 4.2min
+[CV 1/5] END learning_rate=0.01, max_depth=7, n_estimators=300;, score=0.816 total time= 9.8min
+[CV 2/5] END learning_rate=0.01, max_depth=7, n_estimators=300;, score=0.811 total time= 9.7min
+[CV 3/5] END learning_rate=0.01, max_depth=7, n_estimators=300;, score=0.845 total time= 9.5min
+[CV 2/5] END learning_rate=0.1, max_depth=3, n_estimators=300;, score=0.808 total time= 4.3min
+[CV 5/5] END learning_rate=0.01, max_depth=7, n_estimators=300;, score=0.831 total time= 9.4min
+[CV 4/5] END learning_rate=0.01, max_depth=7, n_estimators=300;, score=0.838 total time= 9.5min
+[CV 3/5] END learning_rate=0.1, max_depth=3, n_estimators=300;, score=0.847 total time= 4.1min
+[CV 4/5] END learning_rate=0.1, max_depth=3, n_estimators=300;, score=0.835 total time= 4.1min
+[CV 5/5] END learning_rate=0.1, max_depth=3, n_estimators=300;, score=0.836 total time= 4.1min
+[CV 3/5] END learning_rate=0.1, max_depth=5, n_estimators=100;, score=0.857 total time= 2.2min
+[CV 4/5] END learning_rate=0.1, max_depth=5, n_estimators=100;, score=0.844 total time= 2.2min
+[CV 5/5] END learning_rate=0.1, max_depth=5, n_estimators=100;, score=0.844 total time= 2.2min
+[CV 1/5] END learning_rate=0.1, max_depth=5, n_estimators=200;, score=0.836 total time= 4.4min
+[CV 3/5] END learning_rate=0.1, max_depth=5, n_estimators=200;, score=0.874 total time= 4.4min
+[CV 2/5] END learning_rate=0.1, max_depth=5, n_estimators=200;, score=0.832 total time= 4.5min
+[CV 4/5] END learning_rate=0.1, max_depth=5, n_estimators=200;, score=0.862 total time= 4.3min
+[CV 5/5] END learning_rate=0.1, max_depth=5, n_estimators=200;, score=0.868 total time= 4.3min
+[CV 1/5] END learning_rate=0.1, max_depth=7, n_estimators=100;, score=0.844 total time= 3.1min
+[CV 2/5] END learning_rate=0.1, max_depth=7, n_estimators=100;, score=0.837 total time= 3.1min

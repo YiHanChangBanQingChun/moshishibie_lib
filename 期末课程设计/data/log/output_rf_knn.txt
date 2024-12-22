@@ -1,0 +1,191 @@
+数据已保存为 support2_full.csv
+选择的主成分数量: 46
+缺失的'sex'数量: 0
+0    5125
+1    3980
+Name: sex, dtype: int64
+缺失的'dzgroup'数量: 0
+0    3515
+1    1387
+2     967
+6     908
+7     712
+5     596
+4     512
+3     508
+Name: dzgroup, dtype: int64
+缺失的'dzclass'数量: 0
+0    4227
+1    2862
+2    1420
+3     596
+Name: dzclass, dtype: int64
+缺失的'income'数量: 0
+-1    2982
+ 3    2855
+ 0    1527
+ 1    1057
+ 2     684
+Name: income, dtype: int64
+缺失的'race'数量: 0
+ 5    7191
+ 1    1391
+ 2     290
+ 4     112
+ 0      79
+-1      42
+Name: race, dtype: int64
+缺失的'ca'数量: 0
+0    5995
+2    1858
+1    1252
+Name: ca, dtype: int64
+缺失的'dnr'数量: 0
+ 0    5880
+ 1    2956
+ 2     239
+-1      30
+Name: dnr, dtype: int64
+缺失的'sfdm2'数量: 0
+5    3123
+1    3061
+0    1400
+2     916
+3     564
+4      41
+Name: sfdm2, dtype: int64
+缺失值已填-1
+预处理后的数据（PCA）已保存为 support2_full_preprocessed_pca.csv
+Classifiers:   0%|          | 0/8 [00:00<?, ?it/s]
+Training and evaluating RandomForest...
+Fitting 5 folds for each of 108 candidates, totalling 540 fits
+RandomForest 最佳参数：{'max_depth': 30, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 300}
+RandomForest 格网搜索处理时间：764.65 秒
+特征重要性：
+     Feature  Importance
+3     d.time    0.149975
+42      adls    0.047522
+10   charges    0.044007
+41      adlp    0.041761
+7        edu    0.039081
+17    surv2m    0.033215
+2       slos    0.032459
+26    dnrday    0.031447
+9      scoma    0.031111
+18    surv6m    0.030151
+43     adlsc    0.028745
+25       dnr    0.027539
+13   avtisst    0.026317
+11    totcst    0.024826
+15       sps    0.021453
+0        age    0.020873
+27    meanbp    0.019316
+30      resp    0.019162
+16       aps    0.019064
+23     prg2m    0.018583
+24     prg6m    0.018435
+33       alb    0.018126
+36       sod    0.018091
+37        ph    0.017995
+12   totmcst    0.017970
+8     income    0.017722
+31      temp    0.017249
+29       hrt    0.017023
+34      bili    0.016528
+28      wblc    0.015998
+35      crea    0.015944
+32      pafi    0.015148
+39       bun    0.014394
+40     urine    0.014235
+38   glucose    0.012562
+19      hday    0.009279
+6     num.co    0.007805
+4    dzgroup    0.007610
+14      race    0.006169
+5    dzclass    0.005047
+22        ca    0.004237
+1        sex    0.003230
+20  diabetes    0.002221
+21  dementia    0.000375
+验证集混淆矩阵：
+[[115 125  36   3   1   0]
+ [ 32 499  55  26   0   0]
+ [ 10  35 127  10   0   1]
+ [  8  71  24  10   0   0]
+ [  3   1   4   0   0   0]
+ [  0   0   0   0   0 625]]
+验证集分类报告：
+              precision    recall  f1-score   support
+
+           0       0.68      0.41      0.51       280
+           1       0.68      0.82      0.74       612
+           2       0.52      0.69      0.59       183
+           3       0.20      0.09      0.12       113
+           4       0.00      0.00      0.00         8
+           5       1.00      1.00      1.00       625
+
+    accuracy                           0.76      1821
+   macro avg       0.51      0.50      0.50      1821
+weighted avg       0.74      0.76      0.74      1821
+
+验证集R2得分： 0.8525667291596724
+验证集MSE： 0.5766062602965404
+验证集RMSE： 0.7593459424376615
+RandomForest 验证集分类报告：
+              precision    recall  f1-score   support
+
+           0       0.68      0.41      0.51       280
+           1       0.68      0.82      0.74       612
+           2       0.52      0.69      0.59       183
+           3       0.20      0.09      0.12       113
+           4       0.00      0.00      0.00         8
+           5       1.00      1.00      1.00       625
+
+    accuracy                           0.76      1821
+   macro avg       0.51      0.50      0.50      1821
+weighted avg       0.74      0.76      0.74      1821
+
+RandomForest 验证集R2得分： 0.8525667291596724
+Training and evaluating KNN...
+Fitting 5 folds for each of 4320 candidates, totalling 21600 fits
+KNN 最佳参数：{'algorithm': 'auto', 'leaf_size': 10, 'n_neighbors': 1, 'p': 1, 'weights': 'uniform'}
+KNN 格网搜索处理时间：1483.51 秒
+验证集混淆矩阵：
+[[ 63  97  28  36  10  46]
+ [133 245  80  77  13  64]
+ [ 30  47  33  17  11  45]
+ [ 16  39  17  21   4  16]
+ [  1   0   3   1   1   2]
+ [ 72  95  69  43  29 317]]
+验证集分类报告：
+              precision    recall  f1-score   support
+
+           0       0.20      0.23      0.21       280
+           1       0.47      0.40      0.43       612
+           2       0.14      0.18      0.16       183
+           3       0.11      0.19      0.14       113
+           4       0.01      0.12      0.03         8
+           5       0.65      0.51      0.57       625
+
+    accuracy                           0.37      1821
+   macro avg       0.26      0.27      0.26      1821
+weighted avg       0.43      0.37      0.40      1821
+
+验证集R2得分： -0.2210283078357036
+验证集MSE： 4.775398132894014
+验证集RMSE： 2.1852684349740685
+KNN 验证集分类报告：
+              precision    recall  f1-score   support
+
+           0       0.20      0.23      0.21       280
+           1       0.47      0.40      0.43       612
+           2       0.14      0.18      0.16       183
+           3       0.11      0.19      0.14       113
+           4       0.01      0.12      0.03         8
+           5       0.65      0.51      0.57       625
+
+    accuracy                           0.37      1821
+   macro avg       0.26      0.27      0.26      1821
+weighted avg       0.43      0.37      0.40      1821
+
+KNN 验证集R2得分： -0.2210283078357036
